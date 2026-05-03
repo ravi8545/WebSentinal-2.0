@@ -6,7 +6,7 @@ export const API_ORIGIN =
   // When VITE_API_URL points at an absolute URL, derive its origin; otherwise default to backend dev port.
   (import.meta.env.VITE_API_URL && /^https?:\/\//i.test(import.meta.env.VITE_API_URL)
     ? new URL(import.meta.env.VITE_API_URL).origin
-    : 'http://localhost:3000');
+    : 'https://websentinal-2-0-2.onrender.com');
 
 export const GOOGLE_OAUTH_URL = `${API_ORIGIN}/api/auth/google`;
 
