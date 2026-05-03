@@ -19,7 +19,13 @@ const integrationRoutes = require('./src/routes/integrationRoutes');
 
 const app = express();
 
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({
+  origin: [
+    "https://web-sentinal-2-0.vercel.app",
+    "http://localhost:5173"
+  ],
+  credentials: true
+}));
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
 
