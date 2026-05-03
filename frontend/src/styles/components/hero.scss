@@ -1,0 +1,143 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -220px;
+    right: -280px;
+    width: 560px;
+    height: 560px;
+    background: radial-gradient(
+      circle,
+      rgba(var(--accent-rgb), 0.35) 0%,
+      rgba(var(--primary-rgb), 0.18) 35%,
+      rgba(var(--bg-rgb), 0) 70%
+    );
+    pointer-events: none;
+  }
+
+  &__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2.25rem;
+    align-items: start;
+
+    @include below(md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__left {
+    padding-top: 0.75rem;
+    animation: slideUp 0.7s ease-out 0.1s both;
+  }
+
+  &__eyebrow {
+    margin: 0 0 0.9rem;
+    color: rgba(var(--muted-rgb), 0.95);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    animation: fadeIn 0.6s ease-out 0.2s both;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(2.35rem, 4.6vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    animation: slideUp 0.7s ease-out 0.25s both;
+  }
+
+  &__subtitle {
+    margin: 1rem 0 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 56ch;
+    animation: slideUp 0.7s ease-out 0.3s both;
+  }
+
+  &__bullets {
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  &__bullet {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(var(--text-rgb), 0.95);
+    animation: slideUp 0.6s ease-out both;
+
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{0.35 + $i * 0.08}s;
+      }
+    }
+
+    svg {
+      flex: 0 0 auto;
+      color: var(--primary);
+      transition: transform 0.3s ease;
+    }
+
+    span {
+      color: rgba(var(--text-rgb), 0.95);
+      font-weight: 600;
+    }
+
+    &:hover svg {
+      transform: translateX(4px);
+    }
+  }
+
+  &__slogans {
+    margin: 1.75rem 0 0;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border-left: 2px solid rgba(var(--accent-rgb), 0.6);
+    background: var(--surface-2);
+    border-radius: 0 $radius-md $radius-md 0;
+    transition: background-color 0.25s ease, border-color 0.25s ease,
+      box-shadow 0.25s ease;
+    animation: slideUp 0.7s ease-out 0.4s both;
+
+    &:hover {
+      background: var(--card);
+      border-left-color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+
+    p {
+      margin: 0;
+      color: rgba(var(--muted-rgb), 0.96);
+      line-height: 1.6;
+
+      &:first-child {
+        color: rgba(var(--text-rgb), 0.96);
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    justify-content: flex-end;
+    animation: slideUp 0.8s ease-out 0.15s both;
+
+    @include below(md) {
+      justify-content: flex-start;
+    }
+  }
+}

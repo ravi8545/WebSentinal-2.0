@@ -1,0 +1,83 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.integrations {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+
+    @include below(lg) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include below(sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.4rem;
+    border-radius: $radius-md;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: transform 0.25s ease, background-color 0.25s ease,
+      border-color 0.25s ease, box-shadow 0.25s ease;
+    animation: slideUp 0.6s ease-out both;
+
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{0.1 + $i * 0.05}s;
+      }
+    }
+
+    &:hover {
+      transform: translateY(-4px);
+      background: var(--elevated);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: $radius-md;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--primary-rgb), 0.12);
+    border: 1px solid rgba(var(--primary-rgb), 0.22);
+    color: var(--primary);
+    transition: all 0.3s ease;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__card:hover &__icon {
+    background: rgba(var(--primary-rgb), 0.2);
+    border-color: rgba(var(--primary-rgb), 0.45);
+    transform: scale(1.08);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  &__desc {
+    margin: 0.3rem 0 0;
+    color: rgba(var(--muted-rgb), 0.98);
+    line-height: 1.55;
+    font-size: 0.95rem;
+  }
+}

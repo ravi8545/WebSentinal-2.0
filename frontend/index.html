@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <!-- Apply persisted theme before React mounts to avoid flash -->
+    <script>
+      try {
+        var t = localStorage.getItem('websentinal-theme') || 'light';
+        var cls = t === 'dark' ? 'dark-theme' : 'light-theme';
+        document.documentElement.classList.remove('dark-theme','light-theme');
+        document.documentElement.classList.add(cls);
+        if (document.body) {
+          document.body.classList.remove('dark-theme','light-theme');
+          document.body.classList.add(cls);
+        } else {
+          // If body not yet parsed, queue to run after DOMContentLoaded
+          window.addEventListener('DOMContentLoaded', function () {
+            document.body.classList.remove('dark-theme','light-theme');
+            document.body.classList.add(cls);
+          });
+        }
+      } catch (e) {
+        /* ignore */
+      }
+    </script>
+    <meta
+      name="description"
+      content="WebSentinal — Smart website monitoring for uptime, latency, and incidents."
+    />
+    <link rel="icon" type="image/png" href="/websentinal-logo.png" />
+    <link rel="apple-touch-icon" href="/websentinal-logo.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>WebSentinal - Monitoring SaaS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
