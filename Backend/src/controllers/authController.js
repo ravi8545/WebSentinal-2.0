@@ -17,6 +17,7 @@ async function register(req, res, next) {
       provider: 'local',
     });
     const token = signToken(user);
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
     res.status(201).json({ token, user: user.toSafeJSON() });
   } catch (err) {
     next(err);
@@ -38,6 +39,7 @@ async function login(req, res, next) {
     if (!ok) return res.status(401).json({ message: 'Invalid credentials' });
 
     const token = signToken(user);
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
     res.json({ token, user: user.toSafeJSON() });
   } catch (err) {
     next(err);
@@ -66,6 +68,7 @@ function googleCallback(req, res) {
     return res.redirect(`${frontend}/oauth-success?error=auth_failed`);
   }
   const token = signToken(req.user);
+  res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
   return res.redirect(`${frontend}/oauth-success?token=${encodeURIComponent(token)}`);
 }
 
