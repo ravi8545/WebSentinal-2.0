@@ -19,12 +19,31 @@ const integrationRoutes = require('./src/routes/integrationRoutes');
 
 const app = express();
 
+// Build CORS allowlist from env (comma-separated) + sensible defaults.
+// Also allow any *.vercel.app preview deployment.
+const allowedOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const defaultOrigins = [
+  process.env.FRONTEND_URL,
+  'https://web-sentinal-2-0.vercel.app',
+  'http://localhost:5173',
+].filter(Boolean);
+
+const corsAllowlist = Array.from(new Set([...allowedOrigins, ...defaultOrigins]));
+
 app.use(cors({
-  origin: [
-    "https://web-sentinal-2-0.vercel.app",
-    "http://localhost:5173"
-  ],
-  credentials: true
+  origin: (origin, callback) => {
+    // Allow non-browser requests (curl, server-to-server) with no Origin header.
+    if (!origin) return callback(null, true);
+    if (corsAllowlist.includes(origin)) return callback(null, true);
+    // Allow any Vercel preview deployment for this project.
+    if (/\.vercel\.app$/.test(new URL(origin).hostname)) return callback(null, true);
+    return callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,
 }));
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
