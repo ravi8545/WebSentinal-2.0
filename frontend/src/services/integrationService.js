@@ -14,3 +14,8 @@ export async function disconnectEmailIntegration() {
   const { data } = await api.post('/integrations/email/disconnect');
   return data.integration;
 }
+
+export async function sendTestEmail() {
+  const { data } = await api.post('/integrations/email/test');
+  return data;
+}

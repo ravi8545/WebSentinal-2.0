@@ -48,6 +48,11 @@ function configurePassport() {
               googleId: profile.id,
               avatar: profile.photos?.[0]?.value || null,
               provider: 'google',
+              emailIntegration: {
+                connected: true,
+                email: email.toLowerCase(),
+                connectedAt: new Date(),
+              },
             });
           } else {
             let dirty = false;

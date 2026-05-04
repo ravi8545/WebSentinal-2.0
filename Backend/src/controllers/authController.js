@@ -15,6 +15,11 @@ async function register(req, res, next) {
       email,
       password,
       provider: 'local',
+      emailIntegration: {
+        connected: true,
+        email: email.toLowerCase(),
+        connectedAt: new Date(),
+      },
     });
     const token = signToken(user);
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });

@@ -672,7 +672,7 @@ function WebsitesTable({ rows, onEdit, onDelete, onViewAll, showActions = true, 
 
 /* ------------------------- Sub-views ------------------------- */
 
-function DashboardOverview({ onAddWebsite, onViewAllWebsites }) {
+function DashboardOverview({ onViewAllWebsites }) {
   const { websites } = useData();
 
   return (
@@ -687,9 +687,6 @@ function DashboardOverview({ onAddWebsite, onViewAllWebsites }) {
             Live uptime, alerting, and incident visibility for your sites and APIs.
           </p>
         </div>
-        <button className="btn btn--primary" type="button" onClick={onAddWebsite}>
-          <FiPlus aria-hidden="true" /> Add Website
-        </button>
       </div>
 
       <StatsGrid />
@@ -991,6 +988,7 @@ function ReportsView() {
 
 function IntegrationsView() {
   const { integrations, toggleIntegration } = useData();
+
   return (
     <>
       <PageHeader
@@ -1001,21 +999,64 @@ function IntegrationsView() {
       <section className="dashboard__mainColumn section-reveal is-visible">
         <article className="dashboard__panel card">
           <div className="dashboard__integrations">
-            {integrations.map((item) => (
-              <div key={item.id} className="dashboard__integration">
-                <div>
-                  <strong>{item.name}</strong>
-                  <p>{item.description}</p>
+            {integrations.map((item) => {
+              const isEmail = item.id === 'email' || item.id === 'int2';
+              return (
+                <div key={item.id} className="dashboard__integration">
+                  <div>
+                    <strong>
+                      {item.name}
+                      {!isEmail ? (
+                        <span
+                          style={{
+                            marginLeft: '0.5rem',
+                            padding: '2px 8px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            letterSpacing: '0.04em',
+                            textTransform: 'uppercase',
+                            borderRadius: '999px',
+                            background: 'rgba(148,163,184,0.15)',
+                            color: 'var(--muted, #94a3b8)',
+                            border: '1px solid rgba(148,163,184,0.3)',
+                            verticalAlign: 'middle',
+                          }}
+                        >
+                          Coming soon
+                        </span>
+                      ) : null}
+                    </strong>
+                    <p>{item.description}</p>
+                    {isEmail && item.email ? (
+                      <p style={{ fontSize: '12px', color: 'var(--muted, #94a3b8)' }}>
+                        Alerts will be sent to <strong>{item.email}</strong>
+                      </p>
+                    ) : null}
+                  </div>
+                  {isEmail ? (
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <button
+                        className={`btn ${item.connected ? 'btn--secondary' : 'btn--primary'}`}
+                        type="button"
+                        onClick={() => toggleIntegration(item.id)}
+                      >
+                        {item.connected ? 'Disconnect' : 'Connect'}
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn btn--secondary"
+                      type="button"
+                      disabled
+                      style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                      title="This integration is coming soon"
+                    >
+                      Coming soon
+                    </button>
+                  )}
                 </div>
-                <button
-                  className={`btn ${item.connected ? 'btn--secondary' : 'btn--primary'}`}
-                  type="button"
-                  onClick={() => toggleIntegration(item.id)}
-                >
-                  {item.connected ? 'Disconnect' : 'Connect'}
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </article>
       </section>

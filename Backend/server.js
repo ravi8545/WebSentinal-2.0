@@ -7,7 +7,8 @@ const passport = require('passport');
 const connectDB = require('./src/config/db');
 const configurePassport = require('./src/config/passport');
 const errorHandler = require('./src/middleware/errorHandler');
-const { startMonitor } = require('./src/services/monitor');
+const { startMonitor, stopMonitor } = require('./src/services/monitor');
+const alertService = require('./src/services/alertService');
 
 const authRoutes = require('./src/routes/authRoutes');
 const websiteRoutes = require('./src/routes/websiteRoutes');
@@ -77,3 +78,18 @@ connectDB()
     console.error('Failed to start server:', err.message);
     process.exit(1);
   });
+
+// Flush pending grouped alerts on shutdown so the last digest isn't lost.
+async function shutdown(signal) {
+  console.log(`[server] received ${signal}, flushing alerts and exiting...`);
+  try {
+    stopMonitor();
+    await alertService.flushAll();
+  } catch (e) {
+    console.error('[server] shutdown error:', e.message);
+  } finally {
+    process.exit(0);
+  }
+}
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
