@@ -20,7 +20,7 @@ export default function Footer() {
             <span className="footer__logoText">WebSentinal</span>
           </a>
           <p className="footer__tagline">
-            Smart monitoring for websites &amp; APIs—uptime, latency, and incident
+            Smart monitoring for websites &amp; APIs uptime, latency, and incident
             insights.
           </p>
           <div className="footer__contact">
@@ -93,7 +93,7 @@ export default function Footer() {
 
       <div className="container footer__bottom">
         <p className="footer__copyright">© {year} WebSentinal</p>
-        <p className="footer__note">Frontend UI only — no backend connected.</p>
+       
       </div>
     </footer>
   );
